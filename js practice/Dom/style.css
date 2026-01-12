@@ -1,0 +1,70 @@
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+body {
+  background-color: #ffffff;
+  color: #000000;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+   margin-inline:30%;
+}
+nav{
+  background:#3cbeb8;
+  width:100%;
+}
+
+body.dark-mode {
+  background-color: #222;
+  color: #ffffff;
+}
+button{
+
+padding:10px;
+background-color:#ddd;
+cursor: pointer;
+border:none;
+margin:15px;
+}
+#modeToggle{
+ margin-right:0;
+ float:right;
+}
+
+#btn {
+  margin-top:10%;
+  padding:10px;
+  width:10%;
+  
+}
+
+body.dark-mode button {
+  background-color: #333;
+  color: #fff;
+}
+input[type="password"], input[type="text"] {
+padding: 8px;
+margin: 5px 0;
+border: 1px solid #ccc;
+border-radius: 5px;
+width: 250px;
+}
+label {
+display: block;
+margin-bottom: 5px;
+}
+#tweetBox{
+  height:100vh;
+}
+.warning {
+    color: red;
+    font-weight: bold; 
+}
+.text-area{
+  transform:translateY(-40%);
+}
+#result{
+  
+}

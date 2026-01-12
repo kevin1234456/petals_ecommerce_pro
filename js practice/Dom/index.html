@@ -1,0 +1,1507 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Exercises - All 20 Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Custom styles for animations and transitions */
+        .dark-mode {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+        
+        .dark-mode section, .dark-mode div.bg-white {
+            background-color: #374151;
+            color: #f9fafb;
+            border-color: #4b5563;
+        }
+        
+        .dark-mode .text-gray-800 {
+            color: #f9fafb;
+        }
+        
+        .dark-mode .text-gray-600 {
+            color: #d1d5db;
+        }
+        
+        .dark-mode .bg-gray-50 {
+            background-color: #374151;
+        }
+        
+        .dark-mode .border-gray-200 {
+            border-color: #4b5563;
+        }
+        
+        .dark-mode .bg-gray-100 {
+            background-color: #4b5563;
+        }
+        
+        .dark-mode .bg-blue-50 {
+            background-color: #1e40af30;
+        }
+        
+        .dark-mode .bg-green-50 {
+            background-color: #065f4630;
+        }
+        
+        .dark-mode .bg-purple-50 {
+            background-color: #5b21b630;
+        }
+        
+        .dark-mode .bg-yellow-50 {
+            background-color: #854d0e30;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content.expanded {
+            max-height: 300px;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 p-4 md:p-6" id="body">
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-bold text-blue-600 mb-3">DOM Exercises with JavaScript & Tailwind CSS</h1>
+            <p class="text-gray-600 text-lg">20 practical DOM manipulation exercises fully implemented</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Exercise 1: Change Text on Button Click -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">1. Change Text on Button Click</h2>
+                <p id="welcome-text" class="mb-4 p-3 bg-gray-100 rounded-lg">This text will change when you click the button below.</p>
+                <button id="change-text-btn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200 transform hover:scale-[1.02]">
+                    <i class="fas fa-magic mr-2"></i> Change Text
+                </button>
+            </section>
+
+            <!-- Exercise 2: Toggle Dark Mode -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">2. Toggle Dark Mode</h2>
+                <p class="mb-4 text-gray-600">Switch between light and dark mode for the entire page.</p>
+                <button id="dark-mode-toggle" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                    <i class="fas fa-moon mr-2"></i>
+                    <span>Toggle Dark Mode</span>
+                </button>
+                <p id="theme-status-text" class="text-sm text-gray-500 mt-3">Current: Light Mode</p>
+            </section>
+
+            <!-- Exercise 3: Show/Hide Password -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">3. Show/Hide Password</h2>
+                <div class="relative">
+                    <label for="password-input" class="block text-sm font-medium text-gray-700 mb-2">Enter your password:</label>
+                    <div class="relative">
+                        <input type="password" id="password-input" class="w-full p-3 border border-gray-300 rounded-lg pr-12" placeholder="Your secret password">
+                        <button id="toggle-password" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-blue-500 p-2">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">Click the eye icon to show/hide password</p>
+                </div>
+            </section>
+
+            <!-- Exercise 4: Live Character Counter -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">4. Live Character Counter</h2>
+                <div>
+                    <label for="tweet-text" class="block text-sm font-medium text-gray-700 mb-2">Compose your tweet:</label>
+                    <textarea id="tweet-text" class="w-full p-3 border border-gray-300 rounded-lg" rows="3" placeholder="What's happening?"></textarea>
+                    <div class="flex justify-between items-center mt-3">
+                        <div>
+                            <i class="fas fa-feather text-blue-500 mr-2"></i>
+                            <span id="char-count" class="font-medium">0</span>
+                            <span class="text-gray-500"> characters</span>
+                        </div>
+                        <div>
+                            <span id="char-limit" class="text-gray-500">Max: 280</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                        <div id="char-progress" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 5: Greeting Message -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">5. Greeting Message</h2>
+                <div class="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-xl p-6 text-center">
+                    <i class="fas fa-clock text-4xl text-blue-500 mb-4"></i>
+                    <p id="greeting-message" class="text-2xl font-bold text-gray-800 mb-2">Hello there!</p>
+                    <p id="current-time" class="text-gray-600">Current time will appear here</p>
+                </div>
+            </section>
+
+            <!-- Exercise 6: Form Validation -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">6. Form Validation</h2>
+                <form id="validation-form" class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 mb-2">Username *</label>
+                        <input type="text" id="username" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Enter username">
+                        <p id="username-error" class="text-red-500 text-sm mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Username cannot be empty</p>
+                    </div>
+                    <div>
+                        <label for="form-password" class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                        <input type="password" id="form-password" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="At least 6 characters">
+                        <p id="password-error" class="text-red-500 text-sm mt-1 hidden"><i class="fas fa-exclamation-circle mr-1"></i> Password must be at least 6 characters</p>
+                    </div>
+                    <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition duration-200">
+                        <i class="fas fa-check-circle mr-2"></i> Submit Form
+                    </button>
+                </form>
+            </section>
+
+            <!-- Exercise 7: Dynamic To-Do App -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">7. Dynamic To-Do List</h2>
+                <div class="flex mb-4">
+                    <input type="text" id="todo-input" class="flex-grow p-3 border border-gray-300 rounded-l-lg" placeholder="Add a new task...">
+                    <button id="add-todo" class="bg-blue-500 hover:bg-blue-600 text-white px-5 rounded-r-lg">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+                <div class="max-h-64 overflow-y-auto pr-2">
+                    <ul id="todo-list" class="space-y-2">
+                        <!-- Tasks will be added here -->
+                    </ul>
+                </div>
+                <div class="flex justify-between items-center mt-4 text-sm text-gray-500">
+                    <span id="todo-count">0 tasks</span>
+                    <button id="clear-completed" class="text-blue-500 hover:text-blue-600">Clear completed</button>
+                </div>
+            </section>
+
+            <!-- Exercise 8: Image Gallery -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">8. Image Gallery</h2>
+                <div class="mb-4">
+                    <img id="main-image" src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Main image" class="w-full h-48 object-cover rounded-lg shadow-md">
+                </div>
+                <div class="grid grid-cols-4 gap-2">
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Mountain" class="h-20 w-full object-cover rounded cursor-pointer border-2 border-blue-500" data-image="https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80">
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Night sky" class="h-20 w-full object-cover rounded cursor-pointer" data-image="https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80">
+                    <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Lake" class="h-20 w-full object-cover rounded cursor-pointer" data-image="https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80">
+                    <img src="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Beach" class="h-20 w-full object-cover rounded cursor-pointer" data-image="https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80">
+                </div>
+                <p class="text-sm text-gray-500 mt-3">Click any thumbnail to change the main image</p>
+            </section>
+
+            <!-- Exercise 9: Counter App -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">9. Counter App</h2>
+                <div class="text-center">
+                    <div class="text-6xl font-bold mb-8">
+                        <span id="counter-value" class="text-blue-600">0</span>
+                    </div>
+                    <div class="flex justify-center space-x-4">
+                        <button id="decrease-btn" class="bg-red-500 hover:bg-red-600 text-white w-14 h-14 rounded-full text-2xl transition duration-200 transform hover:scale-110">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <button id="reset-btn" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-medium transition duration-200">
+                            Reset
+                        </button>
+                        <button id="increase-btn" class="bg-green-500 hover:bg-green-600 text-white w-14 h-14 rounded-full text-2xl transition duration-200 transform hover:scale-110">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 10: Dropdown Filter -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">10. Dropdown Filter</h2>
+                <div class="mb-4">
+                    <label for="category-filter" class="block text-sm font-medium text-gray-700 mb-2">Filter by category:</label>
+                    <select id="category-filter" class="w-full p-3 border border-gray-300 rounded-lg">
+                        <option value="all">All Categories</option>
+                        <option value="electronics">Electronics</option>
+                        <option value="clothing">Clothing</option>
+                        <option value="books">Books</option>
+                        <option value="home">Home & Garden</option>
+                    </select>
+                </div>
+                <div class="space-y-3 max-h-64 overflow-y-auto pr-2">
+                    <div class="product-item p-3 border border-gray-200 rounded-lg" data-category="electronics">
+                        <div class="flex items-center">
+                            <i class="fas fa-laptop text-blue-500 mr-3"></i>
+                            <div>
+                                <h3 class="font-medium">Laptop Pro</h3>
+                                <p class="text-sm text-gray-500">Electronics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item p-3 border border-gray-200 rounded-lg" data-category="clothing">
+                        <div class="flex items-center">
+                            <i class="fas fa-tshirt text-purple-500 mr-3"></i>
+                            <div>
+                                <h3 class="font-medium">Cotton T-Shirt</h3>
+                                <p class="text-sm text-gray-500">Clothing</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item p-3 border border-gray-200 rounded-lg" data-category="books">
+                        <div class="flex items-center">
+                            <i class="fas fa-book text-green-500 mr-3"></i>
+                            <div>
+                                <h3 class="font-medium">JavaScript Guide</h3>
+                                <p class="text-sm text-gray-500">Books</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item p-3 border border-gray-200 rounded-lg" data-category="electronics">
+                        <div class="flex items-center">
+                            <i class="fas fa-headphones text-blue-500 mr-3"></i>
+                            <div>
+                                <h3 class="font-medium">Wireless Headphones</h3>
+                                <p class="text-sm text-gray-500">Electronics</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-item p-3 border border-gray-200 rounded-lg" data-category="home">
+                        <div class="flex items-center">
+                            <i class="fas fa-couch text-yellow-500 mr-3"></i>
+                            <div>
+                                <h3 class="font-medium">Modern Sofa</h3>
+                                <p class="text-sm text-gray-500">Home & Garden</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Second Row of Exercises -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+            <!-- Exercise 11: Shopping Cart Count -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">11. Shopping Cart Count</h2>
+                <div class="flex flex-col items-center p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl">
+                    <div class="relative mb-6">
+                        <i class="fas fa-shopping-cart text-5xl text-blue-500"></i>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center">0</span>
+                    </div>
+                    <p class="text-lg mb-2">Items in cart: <span id="cart-count-text" class="font-bold">0</span></p>
+                    <div class="flex space-x-3 mt-4">
+                        <button id="add-to-cart" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-5 rounded-lg transition duration-200">
+                            <i class="fas fa-cart-plus mr-2"></i> Add to Cart
+                        </button>
+                        <button id="clear-cart" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-5 rounded-lg transition duration-200">
+                            <i class="fas fa-trash-alt mr-2"></i> Clear Cart
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 12: Price Calculator -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">12. Price Calculator</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label for="item-price" class="block text-sm font-medium text-gray-700 mb-2">Price per item ($)</label>
+                        <input type="number" id="item-price" class="w-full p-3 border border-gray-300 rounded-lg" value="29.99" min="0" step="0.01">
+                    </div>
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <input type="number" id="quantity" class="w-full p-3 border border-gray-300 rounded-lg" value="1" min="1">
+                    </div>
+                    <div class="p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl mt-6">
+                        <p class="text-gray-600 mb-1">Total Price</p>
+                        <p id="total-price" class="text-3xl font-bold text-green-600">$29.99</p>
+                        <p id="price-breakdown" class="text-sm text-gray-500 mt-2">29.99 × 1 = $29.99</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 13: Search Filter -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">13. Search Filter</h2>
+                <div class="mb-4">
+                    <div class="relative">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="search-input" class="w-full p-3 pl-10 border border-gray-300 rounded-lg" placeholder="Search for items...">
+                    </div>
+                </div>
+                <div class="space-y-2 max-h-64 overflow-y-auto pr-2">
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-apple-alt text-red-500 mr-3"></i>
+                        <span>Apple</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-lemon text-yellow-500 mr-3"></i>
+                        <span>Banana</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-lemon text-orange-500 mr-3"></i>
+                        <span>Orange</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-strawberry text-pink-500 mr-3"></i>
+                        <span>Strawberry</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-grapes text-purple-500 mr-3"></i>
+                        <span>Grapes</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-pineapple text-yellow-600 mr-3"></i>
+                        <span>Pineapple</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-mango text-yellow-500 mr-3"></i>
+                        <span>Mango</span>
+                    </div>
+                    <div class="searchable-item p-3 border border-gray-200 rounded-lg">
+                        <i class="fas fa-watermelon text-green-500 mr-3"></i>
+                        <span>Watermelon</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 14: Tabs System -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">14. Tabs System</h2>
+                <div class="border-b border-gray-200 mb-4">
+                    <nav class="flex space-x-1">
+                        <button class="tab-btn active px-4 py-3 rounded-t-lg font-medium bg-blue-500 text-white" data-tab="description">
+                            <i class="fas fa-info-circle mr-2"></i>Description
+                        </button>
+                        <button class="tab-btn px-4 py-3 rounded-t-lg font-medium text-gray-600 hover:bg-gray-100" data-tab="reviews">
+                            <i class="fas fa-star mr-2"></i>Reviews
+                        </button>
+                        <button class="tab-btn px-4 py-3 rounded-t-lg font-medium text-gray-600 hover:bg-gray-100" data-tab="info">
+                            <i class="fas fa-cog mr-2"></i>Info
+                        </button>
+                    </nav>
+                </div>
+                <div id="tab-content">
+                    <div class="tab-pane active p-4 bg-gray-50 rounded-lg" id="description">
+                        <h3 class="font-bold text-lg mb-2">Product Description</h3>
+                        <p class="text-gray-700">This is a high-quality product designed to meet your needs. It features durable construction, innovative design, and excellent performance.</p>
+                        <ul class="mt-3 space-y-1">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Premium quality materials</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 2-year warranty</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> Free shipping</li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane hidden p-4 bg-gray-50 rounded-lg" id="reviews">
+                        <h3 class="font-bold text-lg mb-2">Customer Reviews</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                                <p class="font-medium">John D.</p>
+                                <div class="flex text-yellow-500 mb-1">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <p class="text-gray-700">"Excellent product! Highly recommended."</p>
+                            </div>
+                            <div class="border-l-4 border-yellow-500 pl-4 py-2">
+                                <p class="font-medium">Sarah M.</p>
+                                <div class="flex text-yellow-500 mb-1">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                                <p class="text-gray-700">"Good value for money. Works as expected."</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane hidden p-4 bg-gray-50 rounded-lg" id="info">
+                        <h3 class="font-bold text-lg mb-2">Product Information</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Dimensions</p>
+                                <p class="font-medium">10 × 5 × 3 inches</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Weight</p>
+                                <p class="font-medium">2.5 lbs</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Material</p>
+                                <p class="font-medium">Premium Plastic</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Color</p>
+                                <p class="font-medium">Matte Black</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 15: Modal Popup -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">15. Modal Popup</h2>
+                <div class="flex justify-center">
+                    <button id="open-modal" class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-lg transition duration-200 transform hover:scale-[1.02]">
+                        <i class="fas fa-external-link-alt mr-2"></i> Open Modal
+                    </button>
+                </div>
+                
+                <!-- Modal Structure -->
+                <div id="modal" class="fixed inset-0 z-50 modal-overlay flex items-center justify-center p-4 hidden">
+                    <div class="bg-white rounded-xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+                        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                            <h3 class="text-xl font-bold">Welcome to Modal</h3>
+                            <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
+                        </div>
+                        <div class="p-6">
+                            <p class="text-gray-700 mb-4">This is a modal dialog. It appears on top of the page content and requires user interaction to dismiss.</p>
+                            <p class="text-gray-700">You can use modals for notifications, forms, confirmations, or additional information.</p>
+                            <div class="mt-6 p-4 bg-blue-50 rounded-lg">
+                                <p class="text-blue-800"><i class="fas fa-info-circle mr-2"></i>Click outside the modal or the close button to dismiss.</p>
+                            </div>
+                        </div>
+                        <div class="flex justify-end p-6 border-t border-gray-200 space-x-3">
+                            <button id="modal-close-btn" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-5 rounded-lg transition duration-200">
+                                Close
+                            </button>
+                            <button class="bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-5 rounded-lg transition duration-200">
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 16: Form Submission Preview -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">16. Form Submission Preview</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <div class="mb-4">
+                            <label for="preview-name" class="block text-sm font-medium text-gray-700 mb-2">Name</label>
+                            <input type="text" id="preview-name" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="Your name">
+                        </div>
+                        <div class="mb-4">
+                            <label for="preview-email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" id="preview-email" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="your@email.com">
+                        </div>
+                        <div class="mb-4">
+                            <label for="preview-message" class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea id="preview-message" class="w-full p-3 border border-gray-300 rounded-lg" rows="4" placeholder="Your message..."></textarea>
+                        </div>
+                    </div>
+                    <div class="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-6">
+                        <h3 class="font-bold text-lg mb-4 border-b border-gray-200 pb-2">Live Preview</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Name:</p>
+                                <p id="preview-name-display" class="font-medium p-2 bg-white rounded">Not provided</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Email:</p>
+                                <p id="preview-email-display" class="font-medium p-2 bg-white rounded">Not provided</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500 mb-1">Message:</p>
+                                <p id="preview-message-display" class="font-medium p-2 bg-white rounded min-h-[80px]">Not provided</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 17: Infinite Scroll -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">17. Infinite Scroll</h2>
+                <div id="scroll-container" class="border border-gray-200 rounded-lg h-64 overflow-y-auto p-4">
+                    <div id="content-container">
+                        <!-- Content will be loaded here -->
+                    </div>
+                    <div id="loading-indicator" class="hidden text-center py-4">
+                        <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                        <p class="mt-2 text-gray-500">Loading more items...</p>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-500 mt-3"><i class="fas fa-info-circle mr-1"></i>Scroll to the bottom to load more content</p>
+            </section>
+
+            <!-- Exercise 18: Accordion Menu -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">18. Accordion Menu (FAQ)</h2>
+                <div class="space-y-3">
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button class="accordion-btn w-full text-left p-4 font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center">
+                            <span>What is JavaScript?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-gray-200">
+                                <p class="text-gray-700">JavaScript is a programming language that enables interactive web pages. It is an essential part of web applications, allowing for client-side scripting to interact with users, control browsers, and create dynamic content.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button class="accordion-btn w-full text-left p-4 font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center">
+                            <span>What is the DOM?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-gray-200">
+                                <p class="text-gray-700">The Document Object Model (DOM) is a programming interface for web documents. It represents the structure of a document as a tree of objects, enabling JavaScript to access and manipulate the content, structure, and style of a webpage.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button class="accordion-btn w-full text-left p-4 font-medium bg-gray-50 hover:bg-gray-100 flex justify-between items-center">
+                            <span>What is Tailwind CSS?</span>
+                            <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 border-t border-gray-200">
+                                <p class="text-gray-700">Tailwind CSS is a utility-first CSS framework that allows developers to build custom designs directly in their HTML without writing custom CSS. It provides low-level utility classes that can be composed to create any design directly in your markup.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Exercise 19: Theme Persistence -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">19. Theme Persistence</h2>
+                <p class="mb-4 text-gray-700">Your theme preference will be saved and automatically applied when you revisit the page.</p>
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <button id="light-theme" class="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i class="fas fa-sun mr-2 text-yellow-500"></i>Light Theme
+                    </button>
+                    <button id="dark-theme" class="bg-gray-800 hover:bg-gray-900 text-white font-medium py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center">
+                        <i class="fas fa-moon mr-2"></i>Dark Theme
+                    </button>
+                </div>
+                <div id="theme-status" class="p-3 bg-gray-100 rounded-lg">
+                    <p class="text-sm"><i class="fas fa-info-circle mr-2 text-blue-500"></i>Current theme: <span id="current-theme" class="font-medium">Light</span></p>
+                    <p class="text-xs text-gray-500 mt-1">Theme saved in localStorage</p>
+                </div>
+            </section>
+
+            <!-- Exercise 20: Multi-Step Form -->
+            <section class="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">20. Multi-Step Form</h2>
+                
+                <!-- Progress Steps -->
+                <div class="flex items-center justify-between mb-8 relative">
+                    <div class="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 z-0"></div>
+                    <div id="progress-bar" class="absolute top-1/2 left-0 h-1 bg-blue-500 -translate-y-1/2 z-10" style="width: 0%"></div>
+                    
+                    <div class="step-indicator z-20 text-center" data-step="1">
+                        <div class="w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">1</div>
+                        <p class="text-xs font-medium">Personal Info</p>
+                    </div>
+                    <div class="step-indicator z-20 text-center" data-step="2">
+                        <div class="w-10 h-10 bg-gray-300 text-gray-800 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">2</div>
+                        <p class="text-xs font-medium">Account Details</p>
+                    </div>
+                    <div class="step-indicator z-20 text-center" data-step="3">
+                        <div class="w-10 h-10 bg-gray-300 text-gray-800 rounded-full flex items-center justify-center mx-auto mb-2 font-bold">3</div>
+                        <p class="text-xs font-medium">Confirmation</p>
+                    </div>
+                </div>
+                
+                <form id="multi-step-form">
+                    <!-- Step 1 -->
+                    <div class="form-step active" id="step-1">
+                        <div class="mb-4">
+                            <label for="step-name" class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="step-name" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="John Doe" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="step-email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="step-email" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="john@example.com" required>
+                        </div>
+                        <div class="flex justify-end">
+                            <button type="button" id="next-step-1" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+                                Next <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2 -->
+                    <div class="form-step" id="step-2">
+                        <div class="mb-4">
+                            <label for="step-username" class="block text-sm font-medium text-gray-700 mb-2">Username *</label>
+                            <input type="text" id="step-username" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="johndoe" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="step-password" class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                            <input type="password" id="step-password" class="w-full p-3 border border-gray-300 rounded-lg" placeholder="At least 8 characters" required>
+                            <p class="text-xs text-gray-500 mt-1">Password must be at least 8 characters long</p>
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" id="prev-step-2" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+                                <i class="fas fa-arrow-left mr-2"></i> Previous
+                            </button>
+                            <button type="button" id="next-step-2" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+                                Next <i class="fas fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3 -->
+                    <div class="form-step" id="step-3">
+                        <div class="p-4 bg-green-50 rounded-lg mb-6">
+                            <h3 class="font-bold text-lg mb-3">Confirmation</h3>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-gray-500">Full Name:</p>
+                                    <p id="confirm-name" class="font-medium">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Email Address:</p>
+                                    <p id="confirm-email" class="font-medium">-</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-gray-500">Username:</p>
+                                    <p id="confirm-username" class="font-medium">-</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <button type="button" id="prev-step-3" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+                                <i class="fas fa-arrow-left mr-2"></i> Previous
+                            </button>
+                            <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition duration-200">
+                                <i class="fas fa-check-circle mr-2"></i> Submit Form
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+        <footer class="mt-12 pt-6 border-t border-gray-200 text-center">
+            <p class="text-gray-600">DOM Exercises - Complete Implementation with JavaScript & Tailwind CSS</p>
+            <p class="text-sm text-gray-500 mt-2">All 20 exercises implemented with responsive design and interactive functionality</p>
+        </footer>
+    </div>
+
+    <script>
+        // Exercise 1: Change Text on Button Click
+        document.getElementById('change-text-btn').addEventListener('click', function() {
+            const welcomeText = document.getElementById('welcome-text');
+            welcomeText.textContent = 'Welcome User! 👋';
+            welcomeText.classList.add('text-green-600', 'font-bold');
+            this.textContent = 'Text Changed!';
+            this.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+            this.classList.add('bg-green-500', 'hover:bg-green-600');
+        });
+
+        // Exercise 2: Toggle Dark Mode - FIXED VERSION
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const themeStatusText = document.getElementById('theme-status-text');
+        let isDarkMode = false;
+        
+        darkModeToggle.addEventListener('click', function() {
+            const body = document.getElementById('body');
+            const sections = document.querySelectorAll('section, div.bg-white');
+            const grayTexts = document.querySelectorAll('.text-gray-600, .text-gray-500, .text-gray-700');
+            const borders = document.querySelectorAll('.border-gray-200, .border-gray-300');
+            const backgrounds = document.querySelectorAll('.bg-gray-50, .bg-gray-100, .bg-blue-50, .bg-green-50, .bg-purple-50, .bg-yellow-50');
+            
+            if (!isDarkMode) {
+                // Switch to Dark Mode
+                body.classList.add('dark-mode');
+                
+                sections.forEach(section => {
+                    section.classList.add('dark-mode');
+                });
+                
+                grayTexts.forEach(text => {
+                    if (text.classList.contains('text-gray-600')) {
+                        text.classList.remove('text-gray-600');
+                        text.classList.add('text-gray-300');
+                    }
+                    if (text.classList.contains('text-gray-500')) {
+                        text.classList.remove('text-gray-500');
+                        text.classList.add('text-gray-400');
+                    }
+                    if (text.classList.contains('text-gray-700')) {
+                        text.classList.remove('text-gray-700');
+                        text.classList.add('text-gray-300');
+                    }
+                });
+                
+                borders.forEach(border => {
+                    if (border.classList.contains('border-gray-200')) {
+                        border.classList.remove('border-gray-200');
+                        border.classList.add('border-gray-600');
+                    }
+                    if (border.classList.contains('border-gray-300')) {
+                        border.classList.remove('border-gray-300');
+                        border.classList.add('border-gray-600');
+                    }
+                });
+                
+                backgrounds.forEach(bg => {
+                    if (bg.classList.contains('bg-gray-50')) {
+                        bg.classList.remove('bg-gray-50');
+                        bg.classList.add('bg-gray-700');
+                    }
+                    if (bg.classList.contains('bg-gray-100')) {
+                        bg.classList.remove('bg-gray-100');
+                        bg.classList.add('bg-gray-600');
+                    }
+                    if (bg.classList.contains('bg-blue-50')) {
+                        bg.classList.remove('bg-blue-50');
+                        bg.classList.add('bg-blue-900', 'bg-opacity-20');
+                    }
+                    if (bg.classList.contains('bg-green-50')) {
+                        bg.classList.remove('bg-green-50');
+                        bg.classList.add('bg-green-900', 'bg-opacity-20');
+                    }
+                    if (bg.classList.contains('bg-purple-50')) {
+                        bg.classList.remove('bg-purple-50');
+                        bg.classList.add('bg-purple-900', 'bg-opacity-20');
+                    }
+                    if (bg.classList.contains('bg-yellow-50')) {
+                        bg.classList.remove('bg-yellow-50');
+                        bg.classList.add('bg-yellow-900', 'bg-opacity-20');
+                    }
+                });
+                
+                // Update button text and icon
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                this.querySelector('span').textContent = 'Toggle Light Mode';
+                this.classList.remove('bg-gray-800', 'hover:bg-gray-900');
+                this.classList.add('bg-yellow-500', 'hover:bg-yellow-600', 'text-gray-900');
+                
+                themeStatusText.textContent = 'Current: Dark Mode';
+                themeStatusText.classList.remove('text-gray-500');
+                themeStatusText.classList.add('text-gray-400');
+                
+                isDarkMode = true;
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                // Switch to Light Mode
+                body.classList.remove('dark-mode');
+                
+                sections.forEach(section => {
+                    section.classList.remove('dark-mode');
+                });
+                
+                grayTexts.forEach(text => {
+                    if (text.classList.contains('text-gray-300')) {
+                        text.classList.remove('text-gray-300');
+                        text.classList.add('text-gray-600');
+                    }
+                    if (text.classList.contains('text-gray-400')) {
+                        text.classList.remove('text-gray-400');
+                        text.classList.add('text-gray-500');
+                    }
+                });
+                
+                borders.forEach(border => {
+                    if (border.classList.contains('border-gray-600')) {
+                        border.classList.remove('border-gray-600');
+                        border.classList.add('border-gray-200');
+                    }
+                });
+                
+                backgrounds.forEach(bg => {
+                    if (bg.classList.contains('bg-gray-700')) {
+                        bg.classList.remove('bg-gray-700');
+                        bg.classList.add('bg-gray-50');
+                    }
+                    if (bg.classList.contains('bg-gray-600')) {
+                        bg.classList.remove('bg-gray-600');
+                        bg.classList.add('bg-gray-100');
+                    }
+                    if (bg.classList.contains('bg-blue-900')) {
+                        bg.classList.remove('bg-blue-900', 'bg-opacity-20');
+                        bg.classList.add('bg-blue-50');
+                    }
+                    if (bg.classList.contains('bg-green-900')) {
+                        bg.classList.remove('bg-green-900', 'bg-opacity-20');
+                        bg.classList.add('bg-green-50');
+                    }
+                    if (bg.classList.contains('bg-purple-900')) {
+                        bg.classList.remove('bg-purple-900', 'bg-opacity-20');
+                        bg.classList.add('bg-purple-50');
+                    }
+                    if (bg.classList.contains('bg-yellow-900')) {
+                        bg.classList.remove('bg-yellow-900', 'bg-opacity-20');
+                        bg.classList.add('bg-yellow-50');
+                    }
+                });
+                
+                // Update button text and icon
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                this.querySelector('span').textContent = 'Toggle Dark Mode';
+                this.classList.remove('bg-yellow-500', 'hover:bg-yellow-600', 'text-gray-900');
+                this.classList.add('bg-gray-800', 'hover:bg-gray-900', 'text-white');
+                
+                themeStatusText.textContent = 'Current: Light Mode';
+                themeStatusText.classList.remove('text-gray-400');
+                themeStatusText.classList.add('text-gray-500');
+                
+                isDarkMode = false;
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+
+        // Exercise 3: Show/Hide Password
+        const togglePasswordBtn = document.getElementById('toggle-password');
+        const passwordInput = document.getElementById('password-input');
+        
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            const icon = this.querySelector('i');
+            if (type === 'text') {
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Exercise 4: Live Character Counter
+        const tweetText = document.getElementById('tweet-text');
+        const charCount = document.getElementById('char-count');
+        const charProgress = document.getElementById('char-progress');
+        const charLimit = 280;
+        
+        tweetText.addEventListener('input', function() {
+            const currentLength = this.value.length;
+            charCount.textContent = currentLength;
+            
+            // Calculate and update progress
+            const percentage = Math.min((currentLength / charLimit) * 100, 100);
+            charProgress.style.width = `${percentage}%`;
+            
+            // Update color based on length
+            if (currentLength > charLimit) {
+                charProgress.classList.remove('bg-blue-500', 'bg-yellow-500');
+                charProgress.classList.add('bg-red-500');
+                charCount.classList.add('text-red-500');
+            } else if (currentLength > charLimit * 0.8) {
+                charProgress.classList.remove('bg-blue-500', 'bg-red-500');
+                charProgress.classList.add('bg-yellow-500');
+                charCount.classList.remove('text-red-500');
+                charCount.classList.add('text-yellow-500');
+            } else {
+                charProgress.classList.remove('bg-yellow-500', 'bg-red-500');
+                charProgress.classList.add('bg-blue-500');
+                charCount.classList.remove('text-red-500', 'text-yellow-500');
+            }
+        });
+
+        // Exercise 5: Greeting Message
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingMessage = document.getElementById('greeting-message');
+            const currentTime = document.getElementById('current-time');
+            
+            let greeting;
+            if (hour < 12) {
+                greeting = "Good Morning! 🌅";
+            } else if (hour < 18) {
+                greeting = "Good Afternoon! ☀️";
+            } else {
+                greeting = "Good Evening! 🌙";
+            }
+            
+            greetingMessage.textContent = greeting;
+            currentTime.textContent = `Current time: ${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}`;
+        }
+        
+        updateGreeting();
+        setInterval(updateGreeting, 60000); // Update every minute
+
+        // Exercise 6: Form Validation
+        const validationForm = document.getElementById('validation-form');
+        const usernameInput = document.getElementById('username');
+        const formPasswordInput = document.getElementById('form-password');
+        const usernameError = document.getElementById('username-error');
+        const passwordError = document.getElementById('password-error');
+        
+        validationForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            let isValid = true;
+            
+            // Validate username
+            if (usernameInput.value.trim() === '') {
+                usernameError.classList.remove('hidden');
+                usernameInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                usernameError.classList.add('hidden');
+                usernameInput.classList.remove('border-red-500');
+            }
+            
+            // Validate password
+            if (formPasswordInput.value.length < 6) {
+                passwordError.classList.remove('hidden');
+                formPasswordInput.classList.add('border-red-500');
+                isValid = false;
+            } else {
+                passwordError.classList.add('hidden');
+                formPasswordInput.classList.remove('border-red-500');
+            }
+            
+            if (isValid) {
+                alert('Form submitted successfully!');
+                validationForm.reset();
+            }
+        });
+
+        // Exercise 7: Dynamic To-Do List
+        const todoInput = document.getElementById('todo-input');
+        const addTodoBtn = document.getElementById('add-todo');
+        const todoList = document.getElementById('todo-list');
+        const todoCount = document.getElementById('todo-count');
+        const clearCompletedBtn = document.getElementById('clear-completed');
+        let todoId = 0;
+        
+        function updateTodoCount() {
+            const totalTodos = document.querySelectorAll('#todo-list li').length;
+            const completedTodos = document.querySelectorAll('#todo-list li .completed').length;
+            todoCount.textContent = `${completedTodos}/${totalTodos} completed`;
+        }
+        
+        function addTodo() {
+            const text = todoInput.value.trim();
+            if (text === '') return;
+            
+            const todoIdNum = ++todoId;
+            const li = document.createElement('li');
+            li.className = 'flex items-center justify-between p-3 bg-gray-50 rounded-lg fade-in slide-in';
+            li.innerHTML = `
+                <div class="flex items-center">
+                    <input type="checkbox" class="todo-checkbox h-5 w-5 mr-3 rounded">
+                    <span class="todo-text">${text}</span>
+                </div>
+                <button class="delete-todo text-red-500 hover:text-red-700 p-1">
+                    <i class="fas fa-trash"></i>
+                </button>
+            `;
+            
+            todoList.appendChild(li);
+            todoInput.value = '';
+            todoInput.focus();
+            
+            // Add event listeners to the new todo
+            const checkbox = li.querySelector('.todo-checkbox');
+            const deleteBtn = li.querySelector('.delete-todo');
+            const todoText = li.querySelector('.todo-text');
+            
+            checkbox.addEventListener('change', function() {
+                todoText.classList.toggle('completed');
+                todoText.classList.toggle('line-through');
+                todoText.classList.toggle('text-gray-400');
+                updateTodoCount();
+            });
+            
+            deleteBtn.addEventListener('click', function() {
+                li.classList.add('opacity-0', 'transform', '-translate-x-4');
+                setTimeout(() => {
+                    todoList.removeChild(li);
+                    updateTodoCount();
+                }, 300);
+            });
+            
+            updateTodoCount();
+        }
+        
+        addTodoBtn.addEventListener('click', addTodo);
+        todoInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addTodo();
+        });
+        
+        clearCompletedBtn.addEventListener('click', function() {
+            const completedTodos = document.querySelectorAll('#todo-list li .completed');
+            completedTodos.forEach(todo => {
+                const li = todo.closest('li');
+                li.classList.add('opacity-0', 'transform', '-translate-x-4');
+                setTimeout(() => {
+                    todoList.removeChild(li);
+                    updateTodoCount();
+                }, 300);
+            });
+        });
+
+        // Exercise 8: Image Gallery
+        const mainImage = document.getElementById('main-image');
+        const thumbnails = document.querySelectorAll('[data-image]');
+        
+        thumbnails.forEach(thumbnail => {
+            thumbnail.addEventListener('click', function() {
+                const newImageSrc = this.getAttribute('data-image');
+                const newImageAlt = this.getAttribute('alt');
+                
+                // Add fade effect to main image
+                mainImage.classList.add('opacity-50');
+                setTimeout(() => {
+                    mainImage.src = newImageSrc;
+                    mainImage.alt = newImageAlt;
+                    mainImage.classList.remove('opacity-50');
+                }, 150);
+                
+                // Remove border from all thumbnails and add to clicked one
+                thumbnails.forEach(img => {
+                    img.classList.remove('border-2', 'border-blue-500');
+                });
+                this.classList.add('border-2', 'border-blue-500');
+            });
+        });
+
+        // Exercise 9: Counter App
+        let counterValue = 0;
+        const counterDisplay = document.getElementById('counter-value');
+        const decreaseBtn = document.getElementById('decrease-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const increaseBtn = document.getElementById('increase-btn');
+        
+        function updateCounter() {
+            counterDisplay.textContent = counterValue;
+            
+            // Change color based on value
+            if (counterValue > 0) {
+                counterDisplay.classList.remove('text-red-500', 'text-gray-800');
+                counterDisplay.classList.add('text-green-500');
+            } else if (counterValue < 0) {
+                counterDisplay.classList.remove('text-green-500', 'text-gray-800');
+                counterDisplay.classList.add('text-red-500');
+            } else {
+                counterDisplay.classList.remove('text-green-500', 'text-red-500');
+                counterDisplay.classList.add('text-blue-600');
+            }
+        }
+        
+        decreaseBtn.addEventListener('click', function() {
+            counterValue--;
+            updateCounter();
+        });
+        
+        resetBtn.addEventListener('click', function() {
+            counterValue = 0;
+            updateCounter();
+        });
+        
+        increaseBtn.addEventListener('click', function() {
+            counterValue++;
+            updateCounter();
+        });
+        
+        updateCounter();
+
+        // Exercise 10: Dropdown Filter
+        const categoryFilter = document.getElementById('category-filter');
+        const productItems = document.querySelectorAll('.product-item');
+        
+        categoryFilter.addEventListener('change', function() {
+            const selectedCategory = this.value;
+            
+            productItems.forEach(item => {
+                if (selectedCategory === 'all' || item.getAttribute('data-category') === selectedCategory) {
+                    item.style.display = 'flex';
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Exercise 11: Shopping Cart Count
+        let cartCount = 0;
+        const cartCountDisplay = document.getElementById('cart-count');
+        const cartCountText = document.getElementById('cart-count-text');
+        const addToCartBtn = document.getElementById('add-to-cart');
+        const clearCartBtn = document.getElementById('clear-cart');
+        
+        function updateCart() {
+            cartCountDisplay.textContent = cartCount;
+            cartCountText.textContent = cartCount;
+            
+            // Add animation to cart icon
+            const cartIcon = document.querySelector('.fa-shopping-cart');
+            cartIcon.classList.add('scale-125');
+            setTimeout(() => {
+                cartIcon.classList.remove('scale-125');
+            }, 300);
+        }
+        
+        addToCartBtn.addEventListener('click', function() {
+            cartCount++;
+            updateCart();
+        });
+        
+        clearCartBtn.addEventListener('click', function() {
+            if (cartCount > 0) {
+                cartCount = 0;
+                updateCart();
+            }
+        });
+
+        // Exercise 12: Price Calculator
+        const itemPriceInput = document.getElementById('item-price');
+        const quantityInput = document.getElementById('quantity');
+        const totalPriceDisplay = document.getElementById('total-price');
+        const priceBreakdownDisplay = document.getElementById('price-breakdown');
+        
+        function calculateTotalPrice() {
+            const price = parseFloat(itemPriceInput.value) || 0;
+            const quantity = parseInt(quantityInput.value) || 1;
+            const total = price * quantity;
+            
+            totalPriceDisplay.textContent = `$${total.toFixed(2)}`;
+            priceBreakdownDisplay.textContent = `${price.toFixed(2)} × ${quantity} = $${total.toFixed(2)}`;
+        }
+        
+        itemPriceInput.addEventListener('input', calculateTotalPrice);
+        quantityInput.addEventListener('input', calculateTotalPrice);
+        
+        // Initial calculation
+        calculateTotalPrice();
+
+        // Exercise 13: Search Filter
+        const searchInput = document.getElementById('search-input');
+        const searchableItems = document.querySelectorAll('.searchable-item');
+        
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            searchableItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    item.classList.add('fade-in');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Exercise 14: Tabs System
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                
+                // Remove active class from all buttons and panes
+                tabBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-blue-500', 'text-white');
+                    b.classList.add('text-gray-600', 'hover:bg-gray-100');
+                });
+                
+                tabPanes.forEach(pane => {
+                    pane.classList.remove('active');
+                    pane.classList.add('hidden');
+                });
+                
+                // Add active class to clicked button and corresponding pane
+                this.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                this.classList.add('active', 'bg-blue-500', 'text-white');
+                
+                const activePane = document.getElementById(tabId);
+                activePane.classList.remove('hidden');
+                activePane.classList.add('active');
+            });
+        });
+
+        // Exercise 15: Modal Popup
+        const openModalBtn = document.getElementById('open-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+        const modal = document.getElementById('modal');
+        
+        openModalBtn.addEventListener('click', function() {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.add('fade-in');
+            }, 10);
+        });
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        modalCloseBtn.addEventListener('click', closeModal);
+        
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        function closeModal() {
+            modal.classList.remove('fade-in');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Exercise 16: Form Submission Preview
+        const previewNameInput = document.getElementById('preview-name');
+        const previewEmailInput = document.getElementById('preview-email');
+        const previewMessageInput = document.getElementById('preview-message');
+        const previewNameDisplay = document.getElementById('preview-name-display');
+        const previewEmailDisplay = document.getElementById('preview-email-display');
+        const previewMessageDisplay = document.getElementById('preview-message-display');
+        
+        function updatePreview() {
+            previewNameDisplay.textContent = previewNameInput.value || 'Not provided';
+            previewEmailDisplay.textContent = previewEmailInput.value || 'Not provided';
+            previewMessageDisplay.textContent = previewMessageInput.value || 'Not provided';
+        }
+        
+        previewNameInput.addEventListener('input', updatePreview);
+        previewEmailInput.addEventListener('input', updatePreview);
+        previewMessageInput.addEventListener('input', updatePreview);
+        
+        // Initial update
+        updatePreview();
+
+        // Exercise 17: Infinite Scroll
+        const scrollContainer = document.getElementById('scroll-container');
+        const contentContainer = document.getElementById('content-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        let itemCount = 0;
+        
+        function loadMoreItems() {
+            loadingIndicator.classList.remove('hidden');
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                for (let i = 0; i < 5; i++) {
+                    itemCount++;
+                    const item = document.createElement('div');
+                    item.className = 'p-3 border border-gray-200 rounded-lg mb-3 fade-in';
+                    item.textContent = `Item #${itemCount}`;
+                    contentContainer.appendChild(item);
+                }
+                
+                loadingIndicator.classList.add('hidden');
+            }, 1000);
+        }
+        
+        scrollContainer.addEventListener('scroll', function() {
+            const { scrollTop, scrollHeight, clientHeight } = this;
+            
+            if (scrollTop + clientHeight >= scrollHeight - 10) {
+                loadMoreItems();
+            }
+        });
+        
+        // Load initial items
+        loadMoreItems();
+
+        // Exercise 18: Accordion Menu
+        const accordionBtns = document.querySelectorAll('.accordion-btn');
+        
+        accordionBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const content = this.nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                // Close all other accordions
+                accordionBtns.forEach(otherBtn => {
+                    if (otherBtn !== this) {
+                        const otherContent = otherBtn.nextElementSibling;
+                        const otherIcon = otherBtn.querySelector('i');
+                        otherContent.classList.remove('expanded');
+                        otherIcon.classList.remove('rotate-180');
+                    }
+                });
+                
+                // Toggle current accordion
+                content.classList.toggle('expanded');
+                icon.classList.toggle('rotate-180');
+            });
+        });
+
+        // Exercise 19: Theme Persistence
+        const lightThemeBtn = document.getElementById('light-theme');
+        const darkThemeBtn = document.getElementById('dark-theme');
+        const currentThemeDisplay = document.getElementById('current-theme');
+        
+        function updateThemeStatus() {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            currentThemeDisplay.textContent = savedTheme.charAt(0).toUpperCase() + savedTheme.slice(1);
+        }
+        
+        function setTheme(theme) {
+            if (theme === 'dark') {
+                // Trigger the dark mode toggle
+                darkModeToggle.click();
+            } else {
+                // If we're in dark mode and want light, click the toggle
+                if (isDarkMode) {
+                    darkModeToggle.click();
+                }
+            }
+            
+            localStorage.setItem('theme', theme);
+            updateThemeStatus();
+        }
+        
+        lightThemeBtn.addEventListener('click', () => setTheme('light'));
+        darkThemeBtn.addEventListener('click', () => setTheme('dark'));
+        
+        // Load saved theme on page load
+        const savedDarkMode = localStorage.getItem('darkMode');
+        if (savedDarkMode === 'true') {
+            // Apply dark mode
+            darkModeToggle.click();
+        }
+        updateThemeStatus();
+
+        // Exercise 20: Multi-Step Form
+        const multiStepForm = document.getElementById('multi-step-form');
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+        const nextStep1Btn = document.getElementById('next-step-1');
+        const nextStep2Btn = document.getElementById('next-step-2');
+        const prevStep2Btn = document.getElementById('prev-step-2');
+        const prevStep3Btn = document.getElementById('prev-step-3');
+        const progressBar = document.getElementById('progress-bar');
+        const stepIndicators = document.querySelectorAll('.step-indicator');
+        const confirmName = document.getElementById('confirm-name');
+        const confirmEmail = document.getElementById('confirm-email');
+        const confirmUsername = document.getElementById('confirm-username');
+        
+        let currentStep = 1;
+        
+        function updateStepUI() {
+            // Update form steps visibility
+            [step1, step2, step3].forEach((step, index) => {
+                if (index + 1 === currentStep) {
+                    step.classList.add('active');
+                    step.classList.remove('hidden');
+                } else {
+                    step.classList.remove('active');
+                    step.classList.add('hidden');
+                }
+            });
+            
+            // Update progress bar
+            const progressPercentage = ((currentStep - 1) / 2) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            // Update step indicators
+            stepIndicators.forEach(indicator => {
+                const stepNum = parseInt(indicator.getAttribute('data-step'));
+                const circle = indicator.querySelector('div');
+                
+                if (stepNum === currentStep) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-800');
+                    circle.classList.add('bg-blue-500', 'text-white');
+                } else if (stepNum < currentStep) {
+                    circle.classList.remove('bg-gray-300', 'text-gray-800');
+                    circle.classList.add('bg-green-500', 'text-white');
+                } else {
+                    circle.classList.remove('bg-blue-500', 'bg-green-500', 'text-white');
+                    circle.classList.add('bg-gray-300', 'text-gray-800');
+                }
+            });
+        }
+        
+        nextStep1Btn.addEventListener('click', function() {
+            // Validate step 1
+            const name = document.getElementById('step-name').value.trim();
+            const email = document.getElementById('step-email').value.trim();
+            
+            if (name === '' || email === '') {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            currentStep = 2;
+            updateStepUI();
+        });
+        
+        nextStep2Btn.addEventListener('click', function() {
+            // Validate step 2
+            const username = document.getElementById('step-username').value.trim();
+            const password = document.getElementById('step-password').value;
+            
+            if (username === '' || password.length < 8) {
+                alert('Please fill in all required fields. Password must be at least 8 characters.');
+                return;
+            }
+            
+            // Update confirmation display
+            confirmName.textContent = document.getElementById('step-name').value;
+            confirmEmail.textContent = document.getElementById('step-email').value;
+            confirmUsername.textContent = username;
+            
+            currentStep = 3;
+            updateStepUI();
+        });
+        
+        prevStep2Btn.addEventListener('click', function() {
+            currentStep = 1;
+            updateStepUI();
+        });
+        
+        prevStep3Btn.addEventListener('click', function() {
+            currentStep = 2;
+            updateStepUI();
+        });
+        
+        multiStepForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form submitted successfully!');
+            multiStepForm.reset();
+            currentStep = 1;
+            updateStepUI();
+        });
+        
+        // Initialize
+        updateStepUI();
+    </script>
+</body>
+</html>

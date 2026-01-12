@@ -1,0 +1,6 @@
+@import "tailwindcss";
+ 
+
+.hello{
+    background-image:url('../assets/image_assets/image_assets/Best\ wallpaper.jpg')
+}
