@@ -211,10 +211,10 @@
             user.orders.forEach(order => {
               allOrders.push({
                 id: order.id,
-                name: user.name, // Using user name since order belongs to them
+                name: user.name, 
                 status: order.status,
                 total: order.total,
-                userId: user.id // Reference to update later
+                userId: user.id 
               });
             });
           }
@@ -229,7 +229,6 @@
           o.name.toLowerCase().includes(filterQuery.toLowerCase())
         );
 
-        // Revenue calculation (parsing string like "Rp 2,000")
         const totalRev = filtered.reduce((sum, o) => {
             const val = typeof o.total === 'string' ? parseFloat(o.total.replace(/[^0-9.-]+/g,"")) : o.total;
             return sum + (val || 0);
@@ -246,10 +245,10 @@
                 ${createTrendCard("Users", filtered.length, "Online", "green", "users", "chart-users")}
             `;
 
-        initSparkline("chart-orders", [10, 15, 8, 20, 18, 25, filtered.length], "#22c55e");
-        initSparkline("chart-revenue", [200, 450, 300, 600, 400, 700, totalRev / 1000], "#22c55e");
-        initSparkline("chart-pending", [2, 5, 3, 6, 2, 4, pendingCount], "#fb923c");
-        initSparkline("chart-users", [50, 80, 60, 100, 90, 120, 110], "#22c55e");
+           initSparkline("chart-orders", [10, 15, 8, 20, 18, 25, filtered.length], "#22c55e");
+           initSparkline("chart-revenue", [200, 450, 300, 600, 400, 700, totalRev / 1000], "#22c55e");
+           initSparkline("chart-pending", [2, 5, 3, 6, 2, 4, pendingCount], "#fb923c");
+           initSparkline("chart-users", [50, 80, 60, 100, 90, 120, 110], "#22c55e");
 
         const tableBody = document.getElementById("order-table-body");
         tableBody.innerHTML = filtered
