@@ -272,7 +272,7 @@
 
     <div
       id="toast"
-      class="fixed bottom-8 right-8 z-[2000] translate-y-20 opacity-0 transition-all duration-500"
+      class="fixed bottom-8 right-8 z-[2000] opacity-0 transition-all duration-500"
     >
       <div
         class="bg-white text-black px-6 py-4 rounded-2xl shadow-2xl flex items-center gap-4 font-bold"
@@ -334,7 +334,6 @@
       let productName = document.getElementById("product-name");
       let productPrice = document.getElementById("product-price");
       let productDescription = document.getElementById("product-description");
-
 
       function getId(id) {
         const filteredData = plants.find((element) => {
@@ -498,7 +497,7 @@
         t.style.transform = "translateY(0)";
         setTimeout(() => {
           t.style.opacity = "0";
-          t.style.transform = "translateY(20px)";
+          t.style.transform = "translateY(50)";
         }, 2000);
       }
 
@@ -524,14 +523,14 @@
             Login 
           </a>
           `;
-        } else if(user && user.role == "admin") {
+        } else if (user && user.role == "admin") {
           authButtonsDiv.innerHTML = `
           <a href="./pages/manager.html" class="text-white bg-green-600 p-3 rounded-xl font-extrabold cursor-pointer hover:bg-green-700 duration-200">
             Access Dashboard
           </a>
           `;
-        } else if(user && user.role == "user") {
-           authButtonsDiv.innerHTML = `
+        } else if (user && user.role == "user") {
+          authButtonsDiv.innerHTML = `
           <a href="./pages/user.html" class="text-white bg-green-600 p-3 rounded-xl font-extrabold cursor-pointer hover:bg-green-700 duration-200">
             Access Dashboard
           </a>

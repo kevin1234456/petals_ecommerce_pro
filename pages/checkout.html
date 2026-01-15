@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -49,7 +49,6 @@
       }
 
       .checkout-bg {
-        /* background-image: url('../assets/image_assets/Best wallpaper.jpg'); */
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -103,10 +102,9 @@
       }
 
       .payment-methods {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
       }
 
       .payment-method {
@@ -143,333 +141,221 @@
         display: block;
       }
 
-      .bank-transfer-info {
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        padding: 1rem;
-        margin-top: 1rem;
-      }
-
-      .crypto-address {
-        background: rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 0.5rem;
-        padding: 0.75rem;
-        font-family: monospace;
-        word-break: break-all;
-        margin: 0.5rem 0;
+      .sidebar-link.active {
+        background: rgba(34, 197, 94, 0.1);
+        color: #4ade80;
+        border-right: 3px solid #22c55e;
       }
     </style>
   </head>
-  <body class="checkout-bg ">
-    <nav class="sticky top-0 z-100 border-b border-white/5 bg-black/80 backdrop-blur-xl px-6 py-4">
-      <div class="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="../index.html" class="flex items-center gap-2 cursor-pointer">
-          <i data-lucide="sprout" class="text-green-500"></i>
-          <span class="text-2xl font-black tracking-tighter uppercase">Petal</span>
-        </a>
-        <div class="flex items-center gap-4">
-          <button id="user-btn" class="p-3 hover:bg-white/5 rounded-full transition">
-            <i data-lucide="user" class="w-6 h-6"></i>
-          </button>
-          <button id="cart-btn" class="relative p-3 hover:bg-white/5 rounded-full transition">
-            <i data-lucide="shopping-basket" class="w-6 h-6"></i>
-            <span id="cart-count" class="absolute top-0 right-0 bg-green-500 text-black text-[10px] font-black rounded-full w-5 h-5 flex items-center justify-center">0</span>
-          </button>
-        </div>
+  <body class="min-h-screen lg:flex checkout-bg">
+    <div class="lg:hidden flex items-center justify-between p-4 bg-black border-b border-white/10 sticky top-0 z-[100]">
+      <div class="flex items-center gap-2">
+        <i data-lucide="sprout" class="text-green-500"></i>
+        <span class="text-xl font-black tracking-tighter uppercase italic">Petal</span>
       </div>
-    </nav>
+      <button onclick="toggleSidebar()" class="p-2 bg-white/5 rounded-lg border border-white/10">
+        <i data-lucide="menu" class="w-6 h-6 text-green-500"></i>
+      </button>
+    </div>
 
-    <main class="max-w-7xl mx-auto px-6 py-12">
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Checkout Form -->
-        <div class="lg:col-span-2 flex flex-col gap-8">
-          <!-- Contact Information -->
-          <div class="glass p-6 rounded-3xl">
-            <h2 class="section-title">Contact Information</h2>
-            <div class="form-grid">
-              <div>
-                <label class="block text-sm font-medium mb-2">First Name</label>
-                <input type="text" id="first-name" class="input-field" required>
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2">Last Name</label>
-                <input type="text" id="last-name" class="input-field" required>
-              </div>
-            </div>
-            <div class="mt-4">
-              <label class="block text-sm font-medium mb-2">Email Address</label>
-              <input type="email" id="email" class="input-field" required>
-            </div>
-            <div class="mt-4">
-              <label class="block text-sm font-medium mb-2">Phone Number</label>
-              <input type="tel" id="phone" class="input-field" required>
-            </div>
-          </div>
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[140] hidden"></div>
 
-          <!-- Shipping Address -->
-          <div class="glass p-6 rounded-3xl">
-            <h2 class="section-title">Shipping Address</h2>
-            <div>
-              <label class="block text-sm font-medium mb-2">Street Address</label>
-              <input type="text" id="address" class="input-field" placeholder="123 Main Street" required>
-            </div>
-            <div class="mt-4">
-              <label class="block text-sm font-medium mb-2">Apartment, suite, etc. (optional)</label>
-              <input type="text" id="address2" class="input-field" placeholder="Apartment, suite, unit, building, floor, etc.">
-            </div>
-            <div class="form-grid mt-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">City</label>
-                <input type="text" id="city" class="input-field" required>
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2">State/Province</label>
-                <input type="text" id="state" class="input-field" required>
-              </div>
-            </div>
-            <div class="form-grid mt-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">ZIP/Postal Code</label>
-                <input type="text" id="zip" class="input-field" required>
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2">Country</label>
-                <select id="country" class="input-field" required>
-                  <option value="ID">Indonesia</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="AU">Australia</option>
-                  <option value="GB">United Kingdom</option>
-                </select>
-              </div>
-            </div>
-          </div>
+    <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 glass border-r border-white/5 z-[150] -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+      <div class="p-8">
+        <a href="../index.html" class="flex items-center gap-2">
+          <i data-lucide="sprout" class="text-green-500 w-8 h-8"></i>
+          <span class="text-2xl font-black tracking-tighter uppercase italic">Petal</span>
+        </a>
+      </div>
 
-          <!-- Payment Method -->
-          <div class="glass p-6 rounded-3xl">
-            <h2 class="section-title">Payment Method</h2>
+      <nav class="flex-1 px-4 space-y-2">
+        <p class="px-4 text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 mb-4">Personal Dashboard</p>
+        <a href="user.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-zinc-400 hover:bg-white/5 transition group">
+          <i data-lucide="user" class="w-5 h-5"></i> Profile Overview
+        </a>
+        <a href="orders.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-zinc-400 hover:bg-white/5 transition">
+          <i data-lucide="package" class="w-5 h-5"></i> My Orders
+        </a>
+        <a href="checkout.html" class="sidebar-link active flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition">
+          <i data-lucide="shopping-cart" class="w-5 h-5"></i> Cart & Checkout
+          <span id="sidebar-cart-count" class="bg-green-500 text-black text-[10px] font-black rounded-full w-5 h-5 flex items-center justify-center ml-auto hidden">0</span>
+        </a>
+        <a href="../index.html" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm text-zinc-400 hover:bg-white/5 transition">
+          <i data-lucide="store" class="w-5 h-5"></i> Continue Shopping
+        </a>
+      </nav>
 
-            <!-- Payment Methods Grid -->
-            <div class="payment-methods">
-              <div class="payment-method selected" data-method="card" onclick="selectPaymentMethod('card')">
-                <span class="payment-method-icon"><i data-lucide="credit-card"></i></span>
-                <div class="font-semibold">Credit/Debit Card</div>
-                <div class="text-xs text-zinc-400">Visa, Mastercard, Amex</div>
-              </div>
-              <div class="payment-method" data-method="paypal" onclick="selectPaymentMethod('paypal')">
-                <span class="payment-method-icon">🅿️</span>
-                <div class="font-semibold">PayPal</div>
-                <div class="text-xs text-zinc-400">Pay with PayPal</div>
-              </div>
-              <div class="payment-method" data-method="bank" onclick="selectPaymentMethod('bank')">
-                <span class="payment-method-icon">🏦</span>
-                <div class="font-semibold">Bank Transfer</div>
-                <div class="text-xs text-zinc-400">Direct bank transfer</div>
-              </div>
-              <!-- <div class="payment-method" data-method="crypto" onclick="selectPaymentMethod('crypto')">
-                <span class="payment-method-icon">₿</span>
-                <div class="font-semibold">Cryptocurrency</div>
-                <div class="text-xs text-zinc-400">BTC, ETH, USDT</div>
-              </div> -->
-              <!-- <div class="payment-method" data-method="cod" onclick="selectPaymentMethod('cod')">
-                <span class="payment-method-icon">💵</span>
-                <div class="font-semibold">Cash on Delivery</div>
-                <div class="text-xs text-zinc-400">Pay when you receive</div>
-              </div> -->
-              <!-- <div class="payment-method" data-method="wallet" onclick="selectPaymentMethod('wallet')">
-                <span class="payment-method-icon">📱</span>
-                <div class="font-semibold">Digital Wallet</div>
-                <div class="text-xs text-zinc-400">Apple Pay, Google Pay</div>
-              </div>
-            </div> -->
+      <div class="p-6 border-t border-white/5">
+        <button onclick="logout()" class="flex items-center gap-3 px-4 py-3 w-full rounded-xl font-bold text-sm text-red-400 hover:bg-red-500/10 transition">
+          <i data-lucide="log-out" class="w-5 h-5"></i> Logout
+        </button>
+      </div>
+    </aside>
 
-            <!-- Card Form -->
-            <div id="cardForm" class="payment-form active space-y-4">
-              <div>
-                <label class="block text-sm font-medium mb-2">Name on Card</label>
-                <input type="text" id="card-name" class="input-field" required>
-              </div>
-              <div>
-                <label class="block text-sm font-medium mb-2">Card Number</label>
-                <input type="text" id="card-number" class="input-field" placeholder="1234 5678 9012 3456" required>
-              </div>
+    <div class="flex-1 lg:ml-72 w-full">
+      <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div class="lg:col-span-2 flex flex-col gap-8">
+            <div class="glass p-6 rounded-3xl">
+              <h2 class="section-title">Contact Information</h2>
               <div class="form-grid">
                 <div>
-                  <label class="block text-sm font-medium mb-2">Expiry Date</label>
-                  <input type="text" id="expiry" class="input-field" placeholder="MM/YY" required>
+                  <label class="block text-sm font-medium mb-2">First Name</label>
+                  <input type="text" id="first-name" class="input-field" required />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium mb-2">CVV</label>
-                  <input type="text" id="cvv" class="input-field" placeholder="123" required>
+                  <label class="block text-sm font-medium mb-2">Last Name</label>
+                  <input type="text" id="last-name" class="input-field" required />
                 </div>
+              </div>
+              <div class="mt-4">
+                <label class="block text-sm font-medium mb-2">Email Address</label>
+                <input type="email" id="email" class="input-field" required />
+              </div>
+              <div class="mt-4">
+                <label class="block text-sm font-medium mb-2">Phone Number</label>
+                <input type="tel" id="phone" class="input-field" required />
               </div>
             </div>
 
-            <!-- PayPal Info -->
-            <div id="paypalForm" class="payment-form">
-              <div class="text-center py-8">
-                <div class="text-4xl mb-4">🅿️</div>
-                <p class="text-lg font-semibold mb-2">Pay with PayPal</p>
-                <p class="text-zinc-400 mb-4">You will be redirected to PayPal to complete your secure payment.</p>
-                <button type="button" class="btn-primary px-8 py-3" onclick="processPayPal()">
-                  Continue with PayPal
-                </button>
+            <div class="glass p-6 rounded-3xl">
+              <h2 class="section-title">Shipping Address</h2>
+              <div>
+                <label class="block text-sm font-medium mb-2">Street Address</label>
+                <input type="text" id="address" class="input-field" placeholder="123 Main Street" required />
               </div>
-            </div>
-
-            <!-- Bank Transfer Info -->
-            <div id="bankForm" class="payment-form">
-              <div class="bank-transfer-info">
-                <h3 class="font-semibold mb-3">Bank Transfer Details</h3>
-                <div class="space-y-2">
-                  <div><strong>Bank:</strong> BCA (Bank Central Asia)</div>
-                  <div><strong>Account Name:</strong> PT Petal Indonesia</div>
-                  <div><strong>Account Number:</strong> 123-456-7890</div>
-                  <div><strong>Reference:</strong> Order #<span id="order-ref">XXXX</span></div>
-                </div>
-                <div class="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded">
-                  <p class="text-sm text-yellow-400">
-                    <strong>Important:</strong> Please include your order reference number in the transfer description.
-                    Your order will be processed once payment is confirmed (1-2 business days).
-                  </p>
-                </div>
+              <div class="mt-4">
+                <label class="block text-sm font-medium mb-2">Apartment, suite, etc. (optional)</label>
+                <input type="text" id="address2" class="input-field" placeholder="Apartment, suite, unit, building, floor, etc." />
               </div>
-            </div>
-
-            <!-- Crypto Payment -->
-            <div id="cryptoForm" class="payment-form">
-              <div class="space-y-4">
+              <div class="form-grid mt-4">
                 <div>
-                  <label class="block text-sm font-medium mb-2">Select Cryptocurrency</label>
-                  <select id="crypto-type" class="input-field" onchange="updateCryptoAddress()">
-                    <option value="btc">Bitcoin (BTC)</option>
-                    <option value="eth">Ethereum (ETH)</option>
-                    <option value="usdt">Tether (USDT)</option>
+                  <label class="block text-sm font-medium mb-2">City</label>
+                  <input type="text" id="city" class="input-field" required />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">State/Province</label>
+                  <input type="text" id="state" class="input-field" required />
+                </div>
+              </div>
+              <div class="form-grid mt-4">
+                <div>
+                  <label class="block text-sm font-medium mb-2">ZIP Code</label>
+                  <input type="text" id="zip" class="input-field" required />
+                </div>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Country</label>
+                  <select id="country" class="input-field" required>
+                    <option value="ID">Indonesia</option>
+                    <option value="US">United States</option>
                   </select>
                 </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2">Amount to Send</label>
-                  <div class="crypto-address" id="crypto-amount">0.00000000 BTC</div>
-                </div>
-                <div>
-                  <label class="block text-sm font-medium mb-2">Send to Address</label>
-                  <div class="crypto-address" id="crypto-address">Loading...</div>
-                </div>
-                <div class="bank-transfer-info">
-                  <p class="text-sm text-zinc-400">
-                    Send the exact amount to the address above. Include your order reference
-                    <strong id="crypto-ref">#XXXX</strong> in the transaction memo if possible.
-                    Payment will be confirmed within 30 minutes.
-                  </p>
-                </div>
               </div>
             </div>
 
-            <!-- Cash on Delivery -->
-            <div id="codForm" class="payment-form">
-              <div class="text-center py-8">
-                <div class="text-4xl mb-4">💵</div>
-                <p class="text-lg font-semibold mb-2">Cash on Delivery</p>
-                <p class="text-zinc-400 mb-4">
-                  Pay in cash when your order is delivered to your door.
-                  Additional COD fee of Rp 5,000 applies.
-                </p>
-                <div class="bg-green-500/10 border border-green-500/20 rounded p-3">
-                  <p class="text-sm text-green-400">
-                    ✅ No payment required now. Pay the delivery person when you receive your plants.
-                  </p>
+            <div class="glass p-6 rounded-3xl">
+              <h2 class="section-title">Payment Method</h2>
+              <div class="w-full flex gap-5 pb-5">
+                <div class="payment-method selected flex-auto" data-method="card" onclick="selectPaymentMethod('card')">
+                  <span class="payment-method-icon"><i data-lucide="credit-card" class="mx-auto"></i></span>
+                  <div class="font-semibold">Card</div>
+                  <div class="text-xs text-zinc-400">Visa, Mastercard</div>
+                </div>
+
+                <div class="payment-method flex-auto" data-method="paypal" onclick="selectPaymentMethod('paypal')">
+                  <span class="payment-method-icon"><i data-lucide="wallet" class="mx-auto"></i></span>
+                  <div class="font-semibold">PayPal</div>
+                  <div class="text-xs text-zinc-400">Secure Transfer</div>
                 </div>
               </div>
-            </div>
 
-            <!-- Digital Wallet -->
-            <div id="walletForm" class="payment-form">
-              <div class="space-y-4">
+              <div id="cardForm" class="payment-form active space-y-4">
                 <div>
-                  <label class="block text-sm font-medium mb-2">Select Wallet</label>
-                  <select id="wallet-type" class="input-field">
-                    <option value="apple">Apple Pay</option>
-                    <option value="google">Google Pay</option>
-                    <option value="samsung">Samsung Pay</option>
-                  </select>
+                  <label class="block text-sm font-medium mb-2">Name on Card</label>
+                  <input type="text" id="card-name" class="input-field" required />
                 </div>
-                <div class="text-center py-6">
-                  <div class="text-4xl mb-4" id="wallet-icon">📱</div>
-                  <p class="text-lg font-semibold mb-2" id="wallet-name">Apple Pay</p>
-                  <p class="text-zinc-400 mb-4">Complete payment using your digital wallet.</p>
-                  <button type="button" class="btn-primary px-8 py-3" onclick="processWallet()">
-                    Pay with <span id="wallet-display">Apple Pay</span>
-                  </button>
+                <div>
+                  <label class="block text-sm font-medium mb-2">Card Number</label>
+                  <input type="text" id="card-number" class="input-field" placeholder="1234 5678 9012 3456" required />
+                </div>
+                <div class="form-grid">
+                  <div>
+                    <label class="block text-sm font-medium mb-2">Expiry Date</label>
+                    <input type="text" id="expiry" class="input-field" placeholder="MM/YY" required />
+                  </div>
+                  <div>
+                    <label class="block text-sm font-medium mb-2">CVV</label>
+                    <input type="text" id="cvv" class="input-field" placeholder="123" required />
+                  </div>
+                </div>
+              </div>
+
+              <div id="paypalForm" class="payment-form">
+                <div class="text-center py-8 bg-white/5 rounded-2xl">
+                  <div class="text-4xl mb-2 font-black italic text-blue-500">PayPal</div>
+                  <p class="text-zinc-400 mb-4">Click below to continue to PayPal's secure portal.</p>
+                  <button type="button" class="btn-primary" onclick="processPayPal()">Continue with PayPal</button>
                 </div>
               </div>
             </div>
           </div>
 
-        
+          <div class="lg:col-span-1">
+            <div class="order-summary">
+              <h2 class="text-xl font-bold mb-6">Order Summary</h2>
+              <div id="order-items" class="space-y-4 mb-6"></div>
+              <div class="total-section">
+                <div class="flex justify-between text-lg font-semibold mb-2">
+                  <span>Subtotal</span>
+                  <span id="subtotal">Rp 0</span>
+                </div>
+                <div class="flex justify-between text-sm mb-2">
+                  <span>Shipping</span>
+                  <span id="shipping">Rp 25,000</span>
+                </div>
+                <div class="flex justify-between text-sm mb-4">
+                  <span>Tax (10%)</span>
+                  <span id="tax">Rp 0</span>
+                </div>
+                <div class="flex justify-between text-2xl font-bold text-green-500">
+                  <span>Total</span>
+                  <span id="order-total">Rp 0</span>
+                </div>
+              </div>
+              <button type="button" id="complete-order" class="btn-primary w-full text-lg py-4 mt-6 flex items-center justify-center gap-2">
+                <i data-lucide="lock" class="w-5 h-5"></i>
+                Complete Order
+              </button>
+            </div>
+          </div>
         </div>
+      </main>
+    </div>
 
-        <!-- Order Summary -->
-       
-      </div>
-      
-        <div class="order-summary order-summary  h-auto  self-start  w-full  max-w-md">
-          <h2 class="text-xl font-bold mb-6">Order Summary</h2>
-          <div id="order-items" class="space-y-4 mb-6">
-            <!-- Items will be populated by JavaScript -->
-          </div>
-          <div class="total-section">
-            <div class="flex justify-between text-lg font-semibold mb-2">
-              <span>Subtotal</span>
-              <span id="subtotal">Rp 0</span>
-            </div>
-            <div class="flex justify-between text-sm mb-2">
-              <span>Shipping</span>
-              <span id="shipping">Rp 25,000</span>
-            </div>
-            <div class="flex justify-between text-sm mb-2" id="cod-fee" style="display: none;">
-              <span>COD Fee</span>
-              <span>Rp 5,000</span>
-            </div>
-            <div class="flex justify-between text-sm mb-4">
-              <span>Tax</span>
-              <span id="tax">Rp 0</span>
-            </div>
-            <div class="flex justify-between text-2xl font-bold text-green-500">
-              <span>Total</span>
-              <span id="order-total">Rp 0</span>
-            </div>
-          </div>
-          <button type="submit" id="complete-order" class="btn-primary w-full text-lg py-4 mt-6">
-            <i data-lucide="lock" class="w-5 h-5 inline mr-2"></i>
-            Complete Order
-          </button>
-        
-       </div>
-    </main>
-
-    <script src="../node_modules/lucide/dist/umd/lucide.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script>
-      // Load current user and cart
-      let currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      let users = JSON.parse(localStorage.getItem("petalUsers")) || [];
+      lucide.createIcons();
+
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      const users = JSON.parse(localStorage.getItem("petalUsers")) || [];
       let cart = [];
-      let selectedPaymentMethod = 'card';
+      let selectedPaymentMethod = "card";
 
       if (!currentUser) {
         alert("Please login to checkout");
         window.location.href = "user-auth.html";
       } else {
-        // Load user's cart
         cart = currentUser.cart || [];
       }
 
       function updateCartCount() {
         const count = cart.reduce((s, i) => s + i.quantity, 0);
-        const el = document.getElementById("cart-count");
-        el.textContent = count;
-        el.classList.toggle("hidden", count === 0);
+        const sidebarCount = document.getElementById("sidebar-cart-count");
+        if (sidebarCount) {
+          sidebarCount.textContent = count;
+          sidebarCount.classList.toggle("hidden", count === 0);
+        }
       }
 
       function renderOrderSummary() {
@@ -477,211 +363,129 @@
         const subtotalEl = document.getElementById("subtotal");
         const taxEl = document.getElementById("tax");
         const totalEl = document.getElementById("order-total");
-        const codFeeEl = document.getElementById("cod-fee");
 
         if (cart.length === 0) {
-          container.innerHTML = "<p class='text-zinc-500'>Your cart is empty.</p>";
+          container.innerHTML = "<p class='text-zinc-500 text-center'>Your cart is empty.</p>";
           subtotalEl.textContent = "Rp 0";
           taxEl.textContent = "Rp 0";
           totalEl.textContent = "Rp 0";
           return;
         }
+        // a;dazl;dmlaz;lmd;zaml;dml;zalm
+        console.log(Object.keys(cart[0]))
 
-        container.innerHTML = cart.map(i => `
+        container.innerHTML = cart
+          .map(
+            (i) => `
           <div class="cart-item">
-            <img src="${i.image}" onerror="this.src='../assets/image_assets/download (31).jpg'" class="w-16 h-16 object-cover rounded-lg">
+            <img src=".${i.image}" onerror="this.src='/assets/image_assets/download (31).jpg'" class="w-16 h-16 object-cover rounded-lg">
             <div class="flex-1">
-              <p class="font-medium">${i.name}</p>
-              <p class="text-sm text-zinc-400">Qty: ${i.quantity}</p>
+              <p class="font-medium text-sm">${i.name}</p>
+              <p class="text-xs text-zinc-400">Qty: ${i.quantity}</p>
             </div>
-            <p class="text-green-500 font-semibold">Rp ${(i.price * i.quantity).toLocaleString()}</p>
-          </div>
-        `).join("");
+            <p class="text-green-500 font-semibold text-sm">Rp ${(i.price * i.quantity).toLocaleString()}</p>
+          </div>`
+          )
+          .join("");
 
         const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
         const shipping = 25000;
-        const codFee = selectedPaymentMethod === 'cod' ? 5000 : 0;
-        const tax = Math.round((subtotal + shipping + codFee) * 0.1);
-        const total = subtotal + shipping + codFee + tax;
+        const tax = Math.round((subtotal + shipping) * 0.1);
+        const total = subtotal + shipping + tax;
 
         subtotalEl.textContent = `Rp ${subtotal.toLocaleString()}`;
         taxEl.textContent = `Rp ${tax.toLocaleString()}`;
         totalEl.textContent = `Rp ${total.toLocaleString()}`;
-
-        // Show/hide COD fee
-        codFeeEl.style.display = selectedPaymentMethod === 'cod' ? 'flex' : 'none';
       }
 
       function selectPaymentMethod(method) {
         selectedPaymentMethod = method;
-
-        // Update visual selection
-        document.querySelectorAll('.payment-method').forEach(el => {
-          el.classList.remove('selected');
-        });
-        document.querySelector(`[data-method="${method}"]`).classList.add('selected');
-
-        // Hide all forms
-        document.querySelectorAll('.payment-form').forEach(form => {
-          form.classList.remove('active');
-        });
-
-        // Show selected form
-        document.getElementById(`${method}Form`).classList.add('active');
-
-        // Update order summary for COD fee
-        renderOrderSummary();
-
-        // Generate order reference for bank transfer and crypto
-        if (method === 'bank' || method === 'crypto') {
-          const orderRef = 'PETAL' + Date.now().toString().slice(-6);
-          document.getElementById('order-ref').textContent = orderRef;
-          document.getElementById('crypto-ref').textContent = '#' + orderRef;
-        }
-
-        // Update crypto amount and address
-        if (method === 'crypto') {
-          updateCryptoAddress();
-        }
-      }
-
-      function updateCryptoAddress() {
-        const cryptoType = document.getElementById('crypto-type').value;
-        const total = calculateTotal();
-
-        // Mock crypto addresses and conversion rates
-        const addresses = {
-          btc: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-          eth: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e',
-          usdt: '0x742d35Cc6634C0532925a3b844Bc454e4438f44e'
-        };
-
-        const rates = {
-          btc: 500000000, // 1 BTC = 500M IDR (mock)
-          eth: 35000000,  // 1 ETH = 35M IDR (mock)
-          usdt: 15000     // 1 USDT = 15K IDR (mock)
-        };
-
-        const amount = (total / rates[cryptoType]).toFixed(8);
-        document.getElementById('crypto-amount').textContent = `${amount} ${cryptoType.toUpperCase()}`;
-        document.getElementById('crypto-address').textContent = addresses[cryptoType];
-      }
-
-      function calculateTotal() {
-        const subtotal = cart.reduce((s, i) => s + i.price * i.quantity, 0);
-        const shipping = 25000;
-        const codFee = selectedPaymentMethod === 'cod' ? 5000 : 0;
-        const tax = Math.round((subtotal + shipping + codFee) * 0.1);
-        return subtotal + shipping + codFee + tax;
+        document.querySelectorAll(".payment-method").forEach((el) => el.classList.remove("selected"));
+        document.querySelector(`[data-method="${method}"]`).classList.add("selected");
+        document.querySelectorAll(".payment-form").forEach((f) => f.classList.remove("active"));
+        document.getElementById(`${method}Form`).classList.add("active");
       }
 
       function processPayPal() {
-        alert("Redirecting to PayPal... (This would normally redirect to PayPal's secure payment page)");
+        alert("Redirecting to PayPal...");
       }
 
-      function processWallet() {
-        const walletType = document.getElementById('wallet-type').value;
-        const walletNames = {
-          apple: 'Apple Pay',
-          google: 'Google Pay',
-          samsung: 'Samsung Pay'
-        };
-        alert(`Processing payment with ${walletNames[walletType]}...`);
-      }
+      document.getElementById("complete-order").addEventListener("click", function () {
+        if (cart.length === 0) {
+          alert("Your cart is empty.");
+          return;
+        }
 
-      // Toggle billing address
-      document.getElementById("same-address").addEventListener("change", function() {
-        const billingSection = document.getElementById("billing-section");
-        billingSection.classList.toggle("hidden", this.checked);
-      });
+        const requiredFields = ["first-name", "last-name", "email", "phone", "address", "city", "state", "zip"];
+        let valid = true;
 
-      document.getElementById("complete-order").addEventListener("click", function(e) {
-        e.preventDefault();
-
-        // Basic form validation
-        const requiredFields = ['first-name', 'last-name', 'email', 'phone', 'address', 'city', 'state', 'zip'];
-        let isValid = true;
-
-        requiredFields.forEach(fieldId => {
-          const field = document.getElementById(fieldId);
+        requiredFields.forEach((id) => {
+          const field = document.getElementById(id);
           if (!field.value.trim()) {
-            field.style.borderColor = '#dc2626';
-            isValid = false;
+            field.style.borderColor = "#dc2626";
+            valid = false;
           } else {
-            field.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            field.style.borderColor = "rgba(255,255,255,0.1)";
           }
         });
 
-        if (!isValid) {
+        if (selectedPaymentMethod === "card") {
+          ["card-name", "card-number", "expiry", "cvv"].forEach((id) => {
+            const field = document.getElementById(id);
+            if (!field.value.trim()) {
+              field.style.borderColor = "#dc2626";
+              valid = false;
+            }
+          });
+        }
+
+        if (!valid) {
           alert("Please fill in all required fields.");
           return;
         }
 
-        const total = calculateTotal();
         const order = {
           id: Date.now(),
           date: new Date().toISOString(),
           items: [...cart],
-          total: total,
+          total: document.getElementById("order-total").textContent,
           paymentMethod: selectedPaymentMethod,
-          status: selectedPaymentMethod === 'cod' ? 'Confirmed' : 'Processing',
-          shipping: {
-            firstName: document.getElementById("first-name").value,
-            lastName: document.getElementById("last-name").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            address: document.getElementById("address").value,
-            address2: document.getElementById("address2").value,
-            city: document.getElementById("city").value,
-            state: document.getElementById("state").value,
-            zip: document.getElementById("zip").value,
-            country: document.getElementById("country").value
-          }
+          status: "Processing",
         };
 
-        // Add order to user's orders
-        if (!currentUser.orders) currentUser.orders = [];
+        currentUser.orders = currentUser.orders || [];
         currentUser.orders.push(order);
-
-        // Clear user's cart
         currentUser.cart = [];
-        cart = [];
 
-        // Update users array
-        const userIndex = users.findIndex(u => u.id === currentUser.id);
-        if (userIndex !== -1) {
-          users[userIndex] = currentUser;
-        }
+        const index = users.findIndex((u) => u.id === currentUser.id);
+        if (index !== -1) users[index] = currentUser;
 
-        // Save to localStorage
         localStorage.setItem("petalUsers", JSON.stringify(users));
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
 
-        // Payment-specific messages
-        let successMessage = "Thank you for your purchase! Your order has been placed successfully.";
-        if (selectedPaymentMethod === 'bank') {
-          successMessage += "\n\nPlease complete the bank transfer to the account details provided. Your order will be processed once payment is confirmed.";
-        } else if (selectedPaymentMethod === 'crypto') {
-          successMessage += "\n\nPlease send the cryptocurrency to the address provided. Your order will be processed once payment is confirmed.";
-        } else if (selectedPaymentMethod === 'cod') {
-          successMessage += "\n\nYour order will be delivered and you can pay cash upon receipt.";
-        }
-
-        alert(successMessage);
+        alert("Order placed successfully!");
         window.location.href = "orders.html";
       });
 
-      document.getElementById("user-btn").onclick = () => {
-        window.location.href = "user.html";
-      };
+      // Fixed: Checked if elements exist before adding event listeners
+      const userBtn = document.getElementById("user-btn");
+      if (userBtn) userBtn.onclick = () => (window.location.href = "user.html");
 
-      document.getElementById("cart-btn").onclick = () => {
-        window.location.href = "../index.html";
-      };
+      const cartBtn = document.getElementById("cart-btn");
+      if (cartBtn) cartBtn.onclick = () => (window.location.href = "../index.html");
+
+      function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("-translate-x-full");
+        document.getElementById("sidebarOverlay").classList.toggle("hidden");
+      }
+
+      function logout() {
+        localStorage.removeItem("currentUser");
+        window.location.href = "user-auth.html";
+      }
 
       updateCartCount();
       renderOrderSummary();
-      lucide.createIcons();
     </script>
   </body>
 </html>
